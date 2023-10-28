@@ -5,5 +5,9 @@
         public int Id { get; set; }
         public string Title { get; set; }
         public string Text { get; set; }
+ 
+        //one to many
+        public  Reviewer Reviewer { get; set; }
+        public Pokemon Pokemon { get; set; }
     }
 }
