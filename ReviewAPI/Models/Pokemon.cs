@@ -8,6 +8,8 @@
  
         //many to many
         public ICollection<Review> Reviews { get; set; }
+
+        //join tables
         public ICollection<PokemonOwner> PokemonOwners { get; set; }
         public ICollection<PokemonCategory> PokemonCategories { get; set; }
     }
