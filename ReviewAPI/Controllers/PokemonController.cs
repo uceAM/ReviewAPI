@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using ReviewAPI.Dto;
 using ReviewAPI.Interfaces;
 using ReviewAPI.Models;
 
@@ -9,16 +11,18 @@ namespace ReviewAPI.Controllers
     public class PokemonController : Controller
     {
         private readonly IPokemonRepository _pokemonRepository;
+        private readonly IMapper _mapper;
 
-        public PokemonController(IPokemonRepository pokemonRepository)
+        public PokemonController(IPokemonRepository pokemonRepository, IMapper mapper)
         {
             _pokemonRepository = pokemonRepository;
+            _mapper = mapper;
         }
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Pokemon>))]
         public IActionResult GetPokemons()
         {
-            var pokemons = _pokemonRepository.GetPokemons();
+            var pokemons = _mapper.Map<List<PokemonDto>>(_pokemonRepository.GetPokemons());
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -36,7 +40,7 @@ namespace ReviewAPI.Controllers
                 return NotFound();
             }
 
-            var pokemon = _pokemonRepository.GetPokemon(pokeId);
+            var pokemon = _mapper.Map<PokemonDto>(_pokemonRepository.GetPokemon(pokeId));
 
             if (!ModelState.IsValid)
             {
@@ -46,6 +50,7 @@ namespace ReviewAPI.Controllers
         }
 
         [HttpGet("{pokeId}/rating")]
+        //[ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(400)]
         public IActionResult GetPokemonRatings(int pokeId)
@@ -55,12 +60,14 @@ namespace ReviewAPI.Controllers
                 return NotFound();
             }
             decimal rating = _pokemonRepository.GetPokemonRatings(pokeId);
+            //var pokemonName = _pokemonRepository.GetPokemon(pokeId).Name;
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             return Ok(rating);
+            //return Ok($"{pokemonName}'s rating is {rating}");
         }
     }
 }
