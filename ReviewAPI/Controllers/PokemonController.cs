@@ -15,7 +15,7 @@ namespace ReviewAPI.Controllers
             _pokemonRepository = pokemonRepository;
         }
         [HttpGet]
-        [ProducesResponseType(200,Type = typeof(ICollection<Pokemon>))]
+        [ProducesResponseType(200,Type = typeof(IEnumerable<Pokemon>))]
         public IActionResult GetPokemons()
         {
             var pokemons = _pokemonRepository.GetPokemons();
