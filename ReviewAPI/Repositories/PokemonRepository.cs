@@ -33,7 +33,7 @@ namespace ReviewAPI.Repositories
 
         }
 
-        public IEnumerable<Pokemon> GetPokemons()
+        public ICollection<Pokemon> GetPokemons()
         {
             return _context.Pokemons.OrderByDescending(p => p.Id).ToList();
         }

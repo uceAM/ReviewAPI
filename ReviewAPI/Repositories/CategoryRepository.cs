@@ -12,7 +12,7 @@ namespace ReviewAPI.Repositories
         {
             _context = context;
         }
-        public IEnumerable<Category> GetCategories()
+        public ICollection<Category> GetCategories()
         {
             return _context.Categories.OrderByDescending(c => c.Id).ToList();
         }
@@ -22,7 +22,7 @@ namespace ReviewAPI.Repositories
             return _context.Categories.Where(c => c.Id == id).FirstOrDefault();
         }
 
-        public IEnumerable<Pokemon> GetPokemonByCategoryId(int id)
+        public ICollection<Pokemon> GetPokemonByCategoryId(int id)
         {
             return _context.PokemonCategories.Where(pc => pc.CategoryId == id).Select(p=>p.Pokemon).ToList();
         }

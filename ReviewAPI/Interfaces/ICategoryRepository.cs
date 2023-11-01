@@ -4,9 +4,9 @@ namespace ReviewAPI.Interfaces
 {
     public interface ICategoryRepository
     {
-        IEnumerable<Category> GetCategories();
+        ICollection<Category> GetCategories();
         Category GetCategory(int id);
-        IEnumerable<Pokemon> GetPokemonByCategoryId(int id);
+        ICollection<Pokemon> GetPokemonByCategoryId(int id);
         bool IsCategoryExist(int id);
     }
 }

@@ -19,7 +19,7 @@ namespace ReviewAPI.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof (IEnumerable<Category>))]
+        [ProducesResponseType(200, Type = typeof (ICollection<Category>))]
         public IActionResult GetCatgories()
         {
             var categories = _mapper.Map<List<CategoryDto>>(_categoryRepository.GetCategories());
@@ -46,7 +46,7 @@ namespace ReviewAPI.Controllers
             return Ok(category);
         }
         [HttpGet("{catId}/pokemon")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Pokemon>))]
+        [ProducesResponseType(200, Type = typeof(ICollection<Pokemon>))]
         [ProducesResponseType(400)]
         public IActionResult GetPokemonByCategoryId(int catId)
         {
