@@ -82,7 +82,7 @@ namespace ReviewAPI
                     {
                         Pokemon = new Pokemon()
                         {
-                            Name = "Venasuar",
+                            Name = "Venasaur",
                             BirthDate = new DateTime(1903,1,1),
                             PokemonCategories = new List<PokemonCategory>()
                             {
@@ -90,11 +90,11 @@ namespace ReviewAPI
                             },
                             Reviews = new List<Review>()
                             {
-                                new Review { Title="Veasaur",Text = "Venasuar is the best pokemon, because it is electric", Rating = 5,
+                                new Review { Title="Venasaur",Text = "Venasaur is the best pokemon, because it is electric", Rating = 5,
                                 Reviewer = new Reviewer(){ FirstName = "Teddy", LastName = "Smith" } },
-                                new Review { Title="Veasaur",Text = "Venasuar is the best a killing rocks", Rating = 5,
+                                new Review { Title="Venasaur",Text = "Venasaur is the best a killing rocks", Rating = 5,
                                 Reviewer = new Reviewer(){ FirstName = "Taylor", LastName = "Jones" } },
-                                new Review { Title="Veasaur",Text = "Venasuar, Venasuar, Venasuar", Rating = 1,
+                                new Review { Title="Venasaur",Text = "venasaur, venasaur, venasaur", Rating = 1,
                                 Reviewer = new Reviewer(){ FirstName = "Jessica", LastName = "McGregor" } },
                             }
                         },
