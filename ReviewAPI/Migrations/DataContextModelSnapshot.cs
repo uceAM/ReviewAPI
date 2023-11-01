@@ -118,7 +118,7 @@ namespace ReviewAPI.Migrations
 
                     b.HasIndex("PokemonId");
 
-                    b.ToTable("PokemonCategory");
+                    b.ToTable("PokemonCategories");
                 });
 
             modelBuilder.Entity("ReviewAPI.Models.PokemonOwner", b =>

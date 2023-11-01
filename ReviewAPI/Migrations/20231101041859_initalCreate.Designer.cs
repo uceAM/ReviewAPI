@@ -12,8 +12,8 @@ using ReviewAPI.Data;
 namespace ReviewAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231028104554_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20231101041859_initalCreate")]
+    partial class initalCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -121,7 +121,7 @@ namespace ReviewAPI.Migrations
 
                     b.HasIndex("PokemonId");
 
-                    b.ToTable("PokemonCategory");
+                    b.ToTable("PokemonCategories");
                 });
 
             modelBuilder.Entity("ReviewAPI.Models.PokemonOwner", b =>
