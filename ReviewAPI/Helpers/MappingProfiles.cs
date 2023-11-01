@@ -9,6 +9,7 @@ namespace ReviewAPI.Helpers
         public MappingProfiles()
         {
             CreateMap<Pokemon, PokemonDto>();
+            CreateMap<Category, CategoryDto>();
         }
     }
 }
