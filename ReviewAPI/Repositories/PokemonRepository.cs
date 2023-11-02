@@ -12,6 +12,30 @@ namespace ReviewAPI.Repositories
             _context = context;
         }
 
+        public bool CreatePokemon(int ownerId, int catId, Pokemon pokemon)
+        {
+            Owner dbOwner = _context.Owners.Where(o => o.Id == ownerId).FirstOrDefault();
+            Category dbCategory = _context.Categories.Where(c => c.Id == catId).FirstOrDefault();
+            if(dbOwner == null || dbCategory == null)
+            {
+                return false;
+            }
+            var createPokeOwnr = new PokemonOwner()
+            {
+                Owner = dbOwner,
+                Pokemon = pokemon,
+            };
+            _context.Add(createPokeOwnr);
+            var createPokeCat = new PokemonCategory()
+            {
+                Category = dbCategory,
+                Pokemon = pokemon,
+            };
+            _context.Add(createPokeCat);
+            _context.Add(pokemon);
+            return Save();
+        }
+
         public Pokemon GetPokemon(int id)
         {
             return _context.Pokemons.Where(p => p.Id == id).FirstOrDefault();
@@ -42,5 +66,9 @@ namespace ReviewAPI.Repositories
         {
             return _context.Pokemons.Any(p => p.Id == id);
         }
+
+        public bool Save()
+        {
+            return _context.SaveChanges() > 0;        }
     }
 }

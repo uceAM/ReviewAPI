@@ -69,5 +69,23 @@ namespace ReviewAPI.Controllers
             return Ok(rating);
             //return Ok($"{pokemonName}'s rating is {rating}");
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreatePokemon([FromQuery] int ownerId, [FromQuery] int catId, [FromBody] PokemonDto pokemonCreate)
+        {
+            if(pokemonCreate == null || !ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var PokemonMap = _mapper.Map<Pokemon>(pokemonCreate);
+            if(!_pokemonRepository.CreatePokemon(ownerId, catId, PokemonMap))
+            {
+                ModelState.AddModelError("", "internal error occured");
+                return StatusCode(500, ModelState);
+            }
+            return Ok($"Successfully created {PokemonMap.Name}");
+        }
     }
 }
