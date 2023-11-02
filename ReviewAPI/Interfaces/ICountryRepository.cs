@@ -10,5 +10,7 @@ namespace ReviewAPI.Interfaces
         ICollection<Owner> GetAllOwnersFromCountry(int id);
         bool IsCountryExist(int id);
         bool IsOwnerExist(int id);
+        bool CreateCountry(Country country);
+        bool Save();
     }
 }

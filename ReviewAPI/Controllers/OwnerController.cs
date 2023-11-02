@@ -79,5 +79,29 @@ namespace ReviewAPI.Controllers
             }
             return Ok(pokemons);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateOwner([FromQuery] int countryId, [FromBody] OwnerDto ownerCreate)
+        {
+            if(ownerCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+            //var existOwners = _ownerRepository.GetOwners()
+            //    .Where(o => o.)
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var ownerMap = _mapper.Map<Owner>(ownerCreate);
+            if(!_ownerRepository.CreateOwner(countryId,ownerMap))
+            {
+                ModelState.AddModelError("", "internal server error");
+                return StatusCode(500, ModelState);
+            }
+            return Ok($"Successfully created {ownerMap.FirstName} {ownerMap.LastName} as an owner");
+        }
     }
 }

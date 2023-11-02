@@ -19,11 +19,11 @@ namespace ReviewAPI.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof (IEnumerable<Country>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Country>))]
         public IActionResult GetCountries()
         {
-            var countries =_mapper.Map<List<CountryDto>>(_countryRepository.GetCountries());
-            if(!ModelState.IsValid)
+            var countries = _mapper.Map<List<CountryDto>>(_countryRepository.GetCountries());
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -31,7 +31,7 @@ namespace ReviewAPI.Controllers
         }
 
         [HttpGet("{countryId}")]
-        [ProducesResponseType(200,Type = typeof (Country))]
+        [ProducesResponseType(200, Type = typeof(Country))]
         [ProducesResponseType(400)]
         public IActionResult GetCountry(int countryId)
         {
@@ -40,7 +40,7 @@ namespace ReviewAPI.Controllers
                 return NotFound();
             }
             var country = _mapper.Map<CountryDto>(_countryRepository.GetCountry(countryId));
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -48,10 +48,10 @@ namespace ReviewAPI.Controllers
         }
 
         [HttpGet("owner/{ownerId}")]
-        [ProducesResponseType(200,Type =typeof (Country))]
+        [ProducesResponseType(200, Type = typeof(Country))]
         [ProducesResponseType(400)]
         public IActionResult GetCountryFromOwnerId(int ownerId)
-        {   if (!_countryRepository.IsOwnerExist(ownerId))
+        { if (!_countryRepository.IsOwnerExist(ownerId))
             {
                 return NotFound();
             }
@@ -78,6 +78,36 @@ namespace ReviewAPI.Controllers
                 return BadRequest(ModelState);
             }
             return Ok(owners);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateCountry(CountryDto countryCreate)
+        {
+            if (countryCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+            var existCountry = _countryRepository.GetCountries()
+                .Where(c=> c.Name.Trim().ToUpper() == countryCreate.Name.Trim().ToUpper())
+                .FirstOrDefault();
+            if (existCountry != null)
+            {
+                ModelState.AddModelError("", "Country already exists in database");
+                return StatusCode(422,ModelState);
+            }
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var countryMap = _mapper.Map<Country>(countryCreate);
+            if (!_countryRepository.CreateCountry(countryMap))
+            {
+                ModelState.AddModelError("", "internal server error");
+                return StatusCode(500,ModelState);
+            }
+            return Ok($"Successfully created {countryMap.Name} Country");
         }
 
     }

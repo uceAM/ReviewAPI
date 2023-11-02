@@ -14,6 +14,18 @@ namespace ReviewAPI.Repositories
 
         }
 
+        public bool CreateOwner(int catId, Owner owner)
+        {
+            Country dbCountry = _context.Countries.Where(c => c.Id == catId).FirstOrDefault();
+            if (dbCountry == null)
+            {
+                return false;
+            }
+            owner.Country = dbCountry;
+            _context.Add(owner);
+            return Save();
+        }
+
         public Owner GetOwner(int id)
         {
             return _context.Owners.Where(o => o.Id == id).FirstOrDefault();
@@ -42,6 +54,11 @@ namespace ReviewAPI.Repositories
         public bool IsPokemonExist(int id)
         {
             return _context.Pokemons.Any(p => p.Id == id);
+        }
+
+        public bool Save()
+        {
+            return _context.SaveChanges() > 0;
         }
     }
 }

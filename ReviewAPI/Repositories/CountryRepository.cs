@@ -12,6 +12,13 @@ namespace ReviewAPI.Repositories
         {
             _context = context;
         }
+
+        public bool CreateCountry(Country country)
+        {
+           _context.Add(country);
+            return Save();
+        }
+
         public ICollection<Owner> GetAllOwnersFromCountry(int id)
         {
             return _context.Owners.Where(c => c.Country.Id == id).ToList();
@@ -35,6 +42,11 @@ namespace ReviewAPI.Repositories
         public bool IsCountryExist(int id)
         {
             return _context.Countries.Any(c => c.Id == id);
+        }
+
+        public bool Save()
+        {
+            return _context.SaveChanges() > 0;
         }
 
         bool ICountryRepository.IsOwnerExist(int id)
