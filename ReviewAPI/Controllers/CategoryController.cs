@@ -77,7 +77,7 @@ namespace ReviewAPI.Controllers
                 .FirstOrDefault();//Category should ideally be a table with unique constraint on Name
             if (category != null)
             {
-                ModelState.AddModelError("", "Category with this categor name already exists.");
+                ModelState.AddModelError("", "Category with this category name already exists.");
                 return StatusCode(422, ModelState);
             }
             if (!ModelState.IsValid)
@@ -90,7 +90,7 @@ namespace ReviewAPI.Controllers
                 ModelState.AddModelError("", "Internal Server Error");
                 return StatusCode(500, ModelState);
             }
-            return Ok($"Successfully created {categoryCreate.Name} Category");
+            return Ok($"Successfully created {categoryMap.Name} Category");
         }
     }
 }
