@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using ReviewAPI.Dto;
 using ReviewAPI.Interfaces;
 using ReviewAPI.Models;
@@ -60,6 +61,36 @@ namespace ReviewAPI.Controllers
                return BadRequest(ModelState);
             }
             return Ok(pokemons);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateCategory([FromBody] CategoryDto categoryCreate)
+        {
+            if (categoryCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+            var category = _categoryRepository.GetCategories()
+                .Where(c => c.Name.Trim().ToUpper() == categoryCreate.Name.Trim().ToUpper())
+                .FirstOrDefault();//Category should ideally be a table with unique constraint on Name
+            if (category != null)
+            {
+                ModelState.AddModelError("", "Category with this categor name already exists.");
+                return StatusCode(422, ModelState);
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var categoryMap = _mapper.Map<Category>(categoryCreate);
+            if(!_categoryRepository.CreateCategory(categoryMap))
+            {
+                ModelState.AddModelError("", "Internal Server Error");
+                return StatusCode(500, ModelState);
+            }
+            return Ok($"Successfully created {categoryCreate.Name} Category");
         }
     }
 }

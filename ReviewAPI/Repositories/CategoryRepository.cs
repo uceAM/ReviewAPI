@@ -12,6 +12,13 @@ namespace ReviewAPI.Repositories
         {
             _context = context;
         }
+
+        public bool CreateCategory(Category category)
+        {
+            _context.Add(category);
+            return Save();
+        }
+
         public ICollection<Category> GetCategories()
         {
             return _context.Categories.OrderByDescending(c => c.Id).ToList();
@@ -30,6 +37,11 @@ namespace ReviewAPI.Repositories
         public bool IsCategoryExist(int id)
         {
             return _context.Categories.Any(c => c.Id == id);
+        }
+
+        public bool Save()
+        {
+            return _context.SaveChanges() > 0;
         }
     }
 }
