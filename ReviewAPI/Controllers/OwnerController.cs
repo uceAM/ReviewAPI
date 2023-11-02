@@ -19,7 +19,7 @@ namespace ReviewAPI.Controllers
            _mapper = mapper;
         }
         [HttpGet]
-        [ProducesResponseType(200,Type =typeof(IEnumerable<Owner>)]
+        [ProducesResponseType(200,Type =typeof(IEnumerable<Owner>))]
         public IActionResult GetOwners()
         {
             var owners = _mapper.Map<List<OwnerDto>>(_ownerRepository.GetOwners());
