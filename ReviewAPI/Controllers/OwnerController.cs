@@ -33,20 +33,20 @@ namespace ReviewAPI.Controllers
         [HttpGet("{ownerId}")]
         [ProducesResponseType(200,Type =typeof(Owner))]
         [ProducesResponseType(400)]
-        public IActionResult GetOwner(int id)
+        public IActionResult GetOwner(int ownerId)
         {
-            if (!_ownerRepository.IsOwnerExist(id))
+            if (!_ownerRepository.IsOwnerExist(ownerId))
             {
                 return NotFound();
             }
-            var owner = _mapper.Map<OwnerDto>(_ownerRepository.GetOwner(id));
+            var owner = _mapper.Map<OwnerDto>(_ownerRepository.GetOwner(ownerId));
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             return Ok(owner);
         }
-        [HttpGet("pokemon/{ownerId}")]
+        [HttpGet("pokemon/{pokeId}")]
         [ProducesResponseType(200, Type =typeof(Owner))]
         [ProducesResponseType(400)]
         public IActionResult GetOwnerByPokemonId(int pokeId)
@@ -66,13 +66,13 @@ namespace ReviewAPI.Controllers
         [HttpGet("{ownerId}/pokemon")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Pokemon>))]
         [ProducesResponseType(400)]
-        public IActionResult GetPokemonsByOwnerId(int id)
+        public IActionResult GetPokemonsByOwnerId(int ownerId)
         {
-            if(!_ownerRepository.IsOwnerExist(id))
+            if(!_ownerRepository.IsOwnerExist(ownerId))
             {
                 return NotFound();
             }
-            var pokemons = _mapper.Map<List<PokemonDto>>(_ownerRepository.GetPokemonsByOwnerId(id));
+            var pokemons = _mapper.Map<List<PokemonDto>>(_ownerRepository.GetPokemonsByOwnerId(ownerId));
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
