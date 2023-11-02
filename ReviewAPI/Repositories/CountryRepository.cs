@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ReviewAPI.Data;
+﻿using ReviewAPI.Data;
 using ReviewAPI.Interfaces;
 using ReviewAPI.Models;
 
@@ -8,12 +7,10 @@ namespace ReviewAPI.Repositories
     public class CountryRepository : ICountryRepository
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
 
-        public CountryRepository(DataContext context, IMapper mapper)
+        public CountryRepository(DataContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
         public ICollection<Owner> GetAllOwnersFromCountry(int id)
         {
