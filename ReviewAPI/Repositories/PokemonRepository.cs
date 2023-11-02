@@ -14,8 +14,8 @@ namespace ReviewAPI.Repositories
 
         public bool CreatePokemon(int ownerId, int catId, Pokemon pokemon)
         {
-            Owner dbOwner = _context.Owners.Where(o => o.Id == ownerId).FirstOrDefault();
-            Category dbCategory = _context.Categories.Where(c => c.Id == catId).FirstOrDefault();
+            var dbOwner = _context.Owners.Where(o => o.Id == ownerId).FirstOrDefault();
+            var dbCategory = _context.Categories.Where(c => c.Id == catId).FirstOrDefault();
             if(dbOwner == null || dbCategory == null)
             {
                 return false;

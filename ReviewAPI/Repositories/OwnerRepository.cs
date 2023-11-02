@@ -16,7 +16,7 @@ namespace ReviewAPI.Repositories
 
         public bool CreateOwner(int catId, Owner owner)
         {
-            Country dbCountry = _context.Countries.Where(c => c.Id == catId).FirstOrDefault();
+            var dbCountry = _context.Countries.Where(c => c.Id == catId).FirstOrDefault();
             if (dbCountry == null)
             {
                 return false;
