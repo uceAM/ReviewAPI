@@ -65,5 +65,23 @@ namespace ReviewAPI.Controllers
             }
             return Ok(reviews);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult createReviewer(ReviewerDto reviewerCreate)
+        {
+            if (reviewerCreate == null || !ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var reviewerMap = _mapper.Map<Reviewer>(reviewerCreate);
+            if(!_reviewerRepository.CreateReviewer(reviewerMap))
+            {
+                ModelState.AddModelError("", "internal server error");
+                return StatusCode(500, ModelState);
+            }
+            return Ok($"Successfully created {reviewerMap.FirstName} {reviewerMap.LastName} as a new reviewer");
+        }
     }
 }

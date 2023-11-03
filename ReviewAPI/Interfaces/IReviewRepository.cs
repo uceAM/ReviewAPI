@@ -9,5 +9,7 @@ namespace ReviewAPI.Interfaces
         ICollection<Review> GetReviewsByPokemonId(int id);
         bool IsReviewExist(int id);
         bool IsPokemonExist(int id);
+        bool CreateReview(int reviewerId, int pokeId, Review review);
+        bool Save();
     }
 }

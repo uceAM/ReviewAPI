@@ -36,5 +36,24 @@ namespace ReviewAPI.Repositories
         {
             return _context.Pokemons.Any(p => p.Id == id);
         }
+
+        public bool CreateReview(int reviewerId, int pokeId, Review review)
+        {
+            var dbReviewer = _context.Reviewers.Where(rvr => rvr.Id == reviewerId).FirstOrDefault();
+            var dbPokemon = _context.Pokemons.Where(p =>  p.Id == pokeId).FirstOrDefault();
+            if (dbReviewer == null || dbPokemon ==null)
+            {
+                return false;
+            }
+            review.Pokemon = dbPokemon;
+            review.Reviewer = dbReviewer;
+            _context.Add(review);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            return _context.SaveChanges() > 0;
+        }
     }
 }

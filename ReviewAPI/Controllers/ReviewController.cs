@@ -63,5 +63,23 @@ namespace ReviewAPI.Controllers
             }
             return Ok(reviews);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateReview([FromQuery] int reviewerId,[FromQuery] int pokeId, [FromBody] ReviewDto reviewCreate)
+        {
+            if(reviewCreate == null || !ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var reviewMap = _mapper.Map<Review>(reviewCreate);
+            if (!_reviewRepository.CreateReview(reviewerId, pokeId, reviewMap))
+            {
+                ModelState.AddModelError("", "internal server error");
+                return StatusCode(500, ModelState);
+            }
+            return Ok($"Successfully created a new review for {reviewMap.Pokemon.Name} by {reviewMap.Reviewer.FirstName} {reviewMap.Reviewer.LastName}");
+        }
     }
 }

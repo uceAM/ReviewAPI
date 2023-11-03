@@ -13,6 +13,12 @@ namespace ReviewAPI.Repositories
             _context = context;
         }
 
+        public bool CreateReviewer(Reviewer reviewer)
+        {
+            _context.Add(reviewer);
+            return Save();
+        }
+
         public Reviewer GetReviewer(int id)
         {
             return _context.Reviewers.Where(rvr=>rvr.Id ==id).FirstOrDefault();
@@ -32,6 +38,11 @@ namespace ReviewAPI.Repositories
         public bool IsReviewerExists(int id)
         {
             return _context.Reviewers.Any(rvr => rvr.Id == id);
+        }
+
+        public bool Save()
+        {
+            return _context.SaveChanges() > 0;
         }
     }
 }
