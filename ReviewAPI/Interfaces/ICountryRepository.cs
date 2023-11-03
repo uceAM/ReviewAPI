@@ -11,6 +11,7 @@ namespace ReviewAPI.Interfaces
         bool IsCountryExist(int id);
         bool IsOwnerExist(int id);
         bool CreateCountry(Country country);
+        bool UpdateCountry(int id, Country country);
         bool Save();
     }
 }

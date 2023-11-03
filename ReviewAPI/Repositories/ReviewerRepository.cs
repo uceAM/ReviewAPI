@@ -44,5 +44,11 @@ namespace ReviewAPI.Repositories
         {
             return _context.SaveChanges() > 0;
         }
+
+        public bool UpdateReviewer(int rvrId, Reviewer reviewer)
+        {
+            _context.Update(reviewer);
+            return Save();
+        }
     }
 }

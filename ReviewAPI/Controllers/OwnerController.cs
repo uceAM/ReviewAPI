@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ReviewAPI.Dto;
 using ReviewAPI.Interfaces;
 using ReviewAPI.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ReviewAPI.Controllers
 {
@@ -102,6 +103,28 @@ namespace ReviewAPI.Controllers
                 return StatusCode(500, ModelState);
             }
             return Ok($"Successfully created {ownerMap.FirstName} {ownerMap.LastName} as an owner");
+        }
+
+        [HttpPut]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        public IActionResult UpdateOwner( [Required]int ownerId, [FromBody]OwnerDto owner)
+        {
+            if( owner == null || !ModelState.IsValid || owner.Id != ownerId)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!_ownerRepository.IsOwnerExist(ownerId))
+            {
+                return NotFound();
+            }
+            var ownerMap = _mapper.Map<Owner>(owner);
+            if (!_ownerRepository.UpdateOwner(ownerId, ownerMap)) {
+                ModelState.AddModelError("", "internal server error");
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
         }
     }
 }

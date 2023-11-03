@@ -43,5 +43,11 @@ namespace ReviewAPI.Repositories
         {
             return _context.SaveChanges() > 0;
         }
+
+        public bool UpdateCategory(int catId, Category category)
+        {
+            _context.Update(category);
+            return Save();
+        }
     }
 }

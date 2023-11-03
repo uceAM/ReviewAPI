@@ -71,5 +71,11 @@ namespace ReviewAPI.Repositories
         {
             return _context.SaveChanges() > 0;
         }
+
+        public bool UpdatePokemon(int pokeId, Pokemon pokemon)
+        {
+            _context.Update(pokemon);
+            return Save();
+        }
     }
 }

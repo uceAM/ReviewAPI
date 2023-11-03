@@ -1,4 +1,5 @@
-﻿using ReviewAPI.Data;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using ReviewAPI.Data;
 using ReviewAPI.Interfaces;
 using ReviewAPI.Models;
 
@@ -54,6 +55,12 @@ namespace ReviewAPI.Repositories
         public bool Save()
         {
             return _context.SaveChanges() > 0;
+        }
+
+        public bool UpdateReview(int reviewId, Review review)
+        {
+            _context.Update(review);
+            return Save();
         }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using ReviewAPI.Dto;
 using ReviewAPI.Interfaces;
 using ReviewAPI.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ReviewAPI.Controllers
 {
@@ -91,6 +92,28 @@ namespace ReviewAPI.Controllers
                 return StatusCode(500, ModelState);
             }
             return Ok($"Successfully created {categoryMap.Name} Category");
+        }
+        [HttpPut]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        public IActionResult UpdateCategory([Required]int catId, [FromBody] CategoryDto category)
+        {
+            if (category == null || !ModelState.IsValid || category.Id != catId)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!_categoryRepository.IsCategoryExist(catId))
+            {
+                return NotFound();
+            }
+            var categoryMap = _mapper.Map<Category>(category);
+            if(!_categoryRepository.UpdateCategory(catId, categoryMap))
+            {
+                ModelState.AddModelError("", "internal server error");
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
         }
     }
 }

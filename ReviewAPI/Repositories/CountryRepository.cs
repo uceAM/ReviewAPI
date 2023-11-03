@@ -49,6 +49,12 @@ namespace ReviewAPI.Repositories
             return _context.SaveChanges() > 0;
         }
 
+        public bool UpdateCountry(int id, Country country)
+        {
+            _context.Update(country);
+            return Save();
+        }
+
         bool ICountryRepository.IsOwnerExist(int id)
         {
             return _context.Owners.Any(o => o.Id == id);

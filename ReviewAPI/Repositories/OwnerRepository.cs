@@ -14,9 +14,9 @@ namespace ReviewAPI.Repositories
 
         }
 
-        public bool CreateOwner(int catId, Owner owner)
+        public bool CreateOwner(int countryId, Owner owner)
         {
-            var dbCountry = _context.Countries.Where(c => c.Id == catId).FirstOrDefault();
+            var dbCountry = _context.Countries.Where(c => c.Id == countryId).FirstOrDefault();
             if (dbCountry == null)
             {
                 return false;
@@ -59,6 +59,12 @@ namespace ReviewAPI.Repositories
         public bool Save()
         {
             return _context.SaveChanges() > 0;
+        }
+
+        public bool UpdateOwner(int ownerId, Owner owner)
+        {
+            _context.Update(owner);
+            return Save();
         }
     }
 }

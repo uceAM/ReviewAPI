@@ -9,6 +9,7 @@ namespace ReviewAPI.Interfaces
         ICollection<Pokemon> GetPokemonByCategoryId(int id);
         bool IsCategoryExist(int id);
         bool CreateCategory(Category category);
+        bool UpdateCategory( int catId, Category category);
         bool Save();
     }
 }

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
 using ReviewAPI.Dto;
 using ReviewAPI.Interfaces;
 using ReviewAPI.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ReviewAPI.Controllers
 {
@@ -86,6 +88,29 @@ namespace ReviewAPI.Controllers
                 return StatusCode(500, ModelState);
             }
             return Ok($"Successfully created {PokemonMap.Name}");
+        }
+
+        [HttpPut]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        public IActionResult UpdatePokemon([Required] int pokeId, [FromBody] PokemonDto pokemon)
+        {
+            if(pokemon == null  || !ModelState.IsValid || pokemon.Id != pokeId)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!_pokemonRepository.IsPokemonExist(pokeId))
+            {
+                return NotFound();
+            }
+            var pokemonMap = _mapper.Map<Pokemon>(pokemon);
+            if(!_pokemonRepository.UpdatePokemon(pokeId,pokemonMap))
+            {
+                ModelState.AddModelError("", "internal server error");
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
         }
     }
 }

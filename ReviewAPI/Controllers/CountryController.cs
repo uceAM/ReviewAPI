@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ReviewAPI.Dto;
 using ReviewAPI.Interfaces;
 using ReviewAPI.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ReviewAPI.Controllers
 {
@@ -110,5 +111,27 @@ namespace ReviewAPI.Controllers
             return Ok($"Successfully created {countryMap.Name} Country");
         }
 
+        [HttpPut]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        public IActionResult UpdateCountry([Required]int countryId, [FromBody]CountryDto country)
+        {
+            if (country == null || !ModelState.IsValid || country.Id != countryId)
+            {
+                return BadRequest(ModelState);
+            }
+            if(!_countryRepository.IsCountryExist(countryId))
+            {
+                return NotFound();
+            }
+            var countryMap =_mapper.Map<Country>(country);
+            if (!_countryRepository.UpdateCountry(countryId, countryMap))
+            {
+                ModelState.AddModelError("", "internal server error");
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
+        }
     }
 }

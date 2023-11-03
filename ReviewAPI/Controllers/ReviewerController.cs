@@ -83,5 +83,27 @@ namespace ReviewAPI.Controllers
             }
             return Ok($"Successfully created {reviewerMap.FirstName} {reviewerMap.LastName} as a new reviewer");
         }
+        [HttpPut]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        public IActionResult UpdateReviewer(int rvrId, ReviewerDto reviewer)
+        {
+            if( reviewer == null || !ModelState.IsValid || reviewer.Id != rvrId)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!_reviewerRepository.IsReviewerExists(rvrId))
+            {
+                return NotFound();
+            }
+            var reviewerMap = _mapper.Map<Reviewer>(reviewer);
+            if (!_reviewerRepository.UpdateReviewer(rvrId, reviewerMap))
+            {
+                ModelState.AddModelError("", "internal server error");
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
+        }
     }
 }
