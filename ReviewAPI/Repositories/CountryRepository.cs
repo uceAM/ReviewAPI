@@ -19,6 +19,12 @@ namespace ReviewAPI.Repositories
             return Save();
         }
 
+        public bool DeleteCountry(Country country)
+        {
+            _context.Remove(country);
+            return Save();
+        }
+
         public ICollection<Owner> GetAllOwnersFromCountry(int id)
         {
             return _context.Owners.Where(c => c.Country.Id == id).ToList();

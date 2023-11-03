@@ -10,6 +10,7 @@ namespace ReviewAPI.Interfaces
         bool IsCategoryExist(int id);
         bool CreateCategory(Category category);
         bool UpdateCategory( int catId, Category category);
+        bool DeleteCategory( Category category );
         bool Save();
     }
 }

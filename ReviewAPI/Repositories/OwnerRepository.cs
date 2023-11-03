@@ -26,6 +26,11 @@ namespace ReviewAPI.Repositories
             return Save();
         }
 
+        public bool DeleteOwner(Owner owner)
+        {
+            throw new NotImplementedException();
+        }
+
         public Owner GetOwner(int id)
         {
             return _context.Owners.Where(o => o.Id == id).FirstOrDefault();

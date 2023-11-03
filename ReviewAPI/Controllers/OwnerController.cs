@@ -126,5 +126,28 @@ namespace ReviewAPI.Controllers
             }
             return NoContent();
         }
+
+        [HttpDelete("{ownerId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        public IActionResult DeleteOwner(int ownerId)
+        {
+            if (!_ownerRepository.IsOwnerExist(ownerId))
+            {
+                return NotFound();
+            }
+            var ownerDelete = _ownerRepository.GetOwner(ownerId);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!_ownerRepository.DeleteOwner(ownerDelete))
+            {
+                ModelState.AddModelError("", ("internal server error"));
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
+        }
     }
 }

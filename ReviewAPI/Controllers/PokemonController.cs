@@ -112,5 +112,28 @@ namespace ReviewAPI.Controllers
             }
             return NoContent();
         }
+
+        [HttpDelete("{countryId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        public IActionResult DeletePokemon(int pokemonId)
+        {
+            if (!_pokemonRepository.IsPokemonExist(pokemonId))
+            {
+                return NotFound();
+            }
+            var pokemonDelete = _pokemonRepository.GetPokemon(pokemonId);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!_pokemonRepository.DeletePokemon(pokemonDelete))
+            {
+                ModelState.AddModelError("", ("internal server error"));
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
+        }
     }
 }

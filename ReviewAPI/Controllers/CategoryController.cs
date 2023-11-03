@@ -21,7 +21,7 @@ namespace ReviewAPI.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof (IEnumerable<Category>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Category>))]
         public IActionResult GetCatgories()
         {
             var categories = _mapper.Map<List<CategoryDto>>(_categoryRepository.GetCategories());
@@ -59,7 +59,7 @@ namespace ReviewAPI.Controllers
             var pokemons = _mapper.Map<List<PokemonDto>>(_categoryRepository.GetPokemonByCategoryId(catId));
             if (!ModelState.IsValid)
             {
-               return BadRequest(ModelState);
+                return BadRequest(ModelState);
             }
             return Ok(pokemons);
         }
@@ -86,7 +86,7 @@ namespace ReviewAPI.Controllers
                 return BadRequest(ModelState);
             }
             var categoryMap = _mapper.Map<Category>(categoryCreate);
-            if(!_categoryRepository.CreateCategory(categoryMap))
+            if (!_categoryRepository.CreateCategory(categoryMap))
             {
                 ModelState.AddModelError("", "Internal Server Error");
                 return StatusCode(500, ModelState);
@@ -97,7 +97,7 @@ namespace ReviewAPI.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]
-        public IActionResult UpdateCategory([Required]int catId, [FromBody] CategoryDto category)
+        public IActionResult UpdateCategory([Required] int catId, [FromBody] CategoryDto category)
         {
             if (category == null || !ModelState.IsValid || category.Id != catId)
             {
@@ -108,10 +108,33 @@ namespace ReviewAPI.Controllers
                 return NotFound();
             }
             var categoryMap = _mapper.Map<Category>(category);
-            if(!_categoryRepository.UpdateCategory(catId, categoryMap))
+            if (!_categoryRepository.UpdateCategory(catId, categoryMap))
             {
                 ModelState.AddModelError("", "internal server error");
                 return StatusCode(500, ModelState);
+            }
+            return NoContent();
+        }
+
+        [HttpDelete("{catId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        public IActionResult DeleteCategory(int catId)
+        {
+            if (!_categoryRepository.IsCategoryExist(catId))
+            {
+                return NotFound();
+            }
+            var categoryDelete = _categoryRepository.GetCategory(catId);
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!_categoryRepository.DeleteCategory(categoryDelete))
+            {
+                ModelState.AddModelError("", ("internal server error"));
+                    return StatusCode(500, ModelState);
             }
             return NoContent();
         }

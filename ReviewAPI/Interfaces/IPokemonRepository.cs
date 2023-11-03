@@ -11,6 +11,7 @@ namespace ReviewAPI.Interfaces
         bool IsPokemonExist(int id);
         bool CreatePokemon(int ownerId, int catId, Pokemon pokemon);
         bool UpdatePokemon(int pokeId, Pokemon pokemon);
+        bool DeletePokemon(Pokemon pokemon);
         bool Save();
 
     }

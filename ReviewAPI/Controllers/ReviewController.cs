@@ -103,5 +103,28 @@ namespace ReviewAPI.Controllers
             }
             return NoContent();
         }
+
+        [HttpDelete("{reviewId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        public IActionResult DeleteReview(int reviewId)
+        {
+            if (!_reviewRepository.IsReviewExist(reviewId))
+            {
+                return NotFound();
+            }
+            var reviewDelete = _reviewRepository.GetReview(reviewId);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!_reviewRepository.DeleteReview(reviewDelete))
+            {
+                ModelState.AddModelError("", ("internal server error"));
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
+        }
     }
 }

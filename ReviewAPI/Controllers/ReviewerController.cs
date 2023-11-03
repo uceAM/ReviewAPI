@@ -38,7 +38,7 @@ namespace ReviewAPI.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetReviewer(int reviewerId)
         {
-            if (!_reviewerRepository.IsReviewerExists(reviewerId))
+            if (!_reviewerRepository.IsReviewerExist(reviewerId))
             {
                 return NotFound();
             }

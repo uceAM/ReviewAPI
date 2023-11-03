@@ -133,5 +133,28 @@ namespace ReviewAPI.Controllers
             }
             return NoContent();
         }
+
+        [HttpDelete("{countryId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        public IActionResult DeleteCountry(int countryId)
+        {
+            if (!_countryRepository.IsCountryExist(countryId))
+            {
+                return NotFound();
+            }
+            var countryDelete = _countryRepository.GetCountry(countryId);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!_countryRepository.DeleteCountry(countryDelete))
+            {
+                ModelState.AddModelError("", ("internal server error"));
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
+        }
     }
 }

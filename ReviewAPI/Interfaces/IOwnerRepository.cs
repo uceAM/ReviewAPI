@@ -12,6 +12,7 @@ namespace ReviewAPI.Interfaces
         bool IsPokemonExist(int id);
         bool CreateOwner( int countryId,Owner owner);
         bool UpdateOwner( int ownerId, Owner owner);
+        bool DeleteOwner(Owner owner);
         bool Save();
     }
 }
