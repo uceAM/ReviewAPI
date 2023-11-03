@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ReviewAPI.Dto;
 using ReviewAPI.Interfaces;
 using ReviewAPI.Models;
+using ReviewAPI.Repositories;
 using System.Reflection.Metadata.Ecma335;
 
 namespace ReviewAPI.Controllers
@@ -54,7 +55,7 @@ namespace ReviewAPI.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetReviewsByReviewerId(int reviewerId)
         {
-            if (!_reviewerRepository.IsReviewerExists(reviewerId))
+            if (!_reviewerRepository.IsReviewerExist(reviewerId))
             {
                 return NotFound(); 
             }
@@ -93,7 +94,7 @@ namespace ReviewAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (!_reviewerRepository.IsReviewerExists(rvrId))
+            if (!_reviewerRepository.IsReviewerExist(rvrId))
             {
                 return NotFound();
             }
@@ -101,6 +102,29 @@ namespace ReviewAPI.Controllers
             if (!_reviewerRepository.UpdateReviewer(rvrId, reviewerMap))
             {
                 ModelState.AddModelError("", "internal server error");
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
+        }
+
+        [HttpDelete("{reviewId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        public IActionResult DeleteReviewer(int reviewerId)
+        {
+            if (!_reviewerRepository. IsReviewerExist(reviewerId))
+            {
+                return NotFound();
+            }
+            var reviewerDelete = _reviewerRepository.GetReviewer(reviewerId);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!_reviewerRepository.DeleteReviewer(reviewerDelete))
+            {
+                ModelState.AddModelError("", ("internal server error"));
                 return StatusCode(500, ModelState);
             }
             return NoContent();

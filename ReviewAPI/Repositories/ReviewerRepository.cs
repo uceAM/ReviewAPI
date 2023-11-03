@@ -19,6 +19,12 @@ namespace ReviewAPI.Repositories
             return Save();
         }
 
+        public bool DeleteReviewer(Reviewer reviewer)
+        {
+            _context.Remove(reviewer);
+            return Save();
+        }
+
         public Reviewer GetReviewer(int id)
         {
             return _context.Reviewers.Where(rvr=>rvr.Id ==id).FirstOrDefault();
@@ -35,7 +41,7 @@ namespace ReviewAPI.Repositories
             //return _context.Reviews.Where(r=> r.Reviewer.Id == id).ToList();
         }
 
-        public bool IsReviewerExists(int id)
+        public bool IsReviewerExist(int id)
         {
             return _context.Reviewers.Any(rvr => rvr.Id == id);
         }
